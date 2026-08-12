@@ -1,0 +1,92 @@
+//Na linha a seguir estamos carregando a biblioteca Standart Input Output
+//para usarmos os comandos de entrada (scanf) e saida (printf) de dados
+#include <stdio.h>
+
+/* Escreva uma algoritmo que solcite Nome, sexo, idade e tres notas de N alunos em uma turma e ao final apresente:
+1) Total de alunos cadastrados
+2) Media das idades dos alunos da turma
+3) Quantidade de alunos aprovados ( considerar media de aprovaçao 6.0)
+4) percetual de aprovados por sexo ( Masculino e Femininos)
+5) Relatorios de alunos aprovados
+*/
+
+
+// A seguir estamos definindo uma estrutura de dados na memoria
+struct Aluno {
+    char Nome[30];
+    char Sexo;
+    int Idade;
+    float Notas[10];
+    bool Aprovado;
+};
+
+int main() {
+    int Qtdalunos;
+    int QtdProvas;
+    struct Aluno Alunos[100];
+    
+    // Variáveis de controle (Totais)
+    int totalAprovados = 0;
+    float somaIdades = 0;
+    int totalM = 0, aprovM = 0;
+    int totalF = 0, aprovF = 0;
+
+    printf("Informe a quantidade de alunos da turma: ");
+    scanf("%i", &Qtdalunos);
+    
+    printf("Informe a quantidade de provas na turma: ");
+    scanf("%i", &QtdProvas);
+    
+    printf("Informe a media de provas da turma: ");
+    scanf("%i", &QtdProvas);
+
+    for (int i = 0; i < QtdProvas; i++) {
+        printf("\nInforme o nome do %i aluno: ", i + 1);
+        scanf("%s", Alunos[i].Nome);
+        printf("Informe a idade: ");
+        scanf("%i", &Alunos[i].Idade);
+        somaIdades += Alunos[i].Idade;
+        printf("Informe o sexo [M/F]: ");
+        scanf(" %c", &Alunos[i].Sexo);
+
+        if (Alunos[i].Sexo == 'M' || Alunos[i].Sexo == 'm') totalM++;
+        else if (Alunos[i].Sexo == 'F' || Alunos[i].Sexo == 'f') totalF++;
+
+        float somaDasNotas = 0;
+        for (int n = 0; n < QtdProvas; n++) {
+            printf("Informe a %i nota: ", n + 1);
+            scanf("%f", &Alunos[i].Notas[n]);
+            somaDasNotas += Alunos[i].Notas[n];
+        }
+
+        float media = somaDasNotas / 3;
+        if (media >= 6.0) {
+            Alunos[i].Aprovado = true;
+            totalAprovados++; //TotalAprovados=TotalAprovados+1; ou TotalAprovados+=1
+    
+            if (Alunos[i].Sexo == 'M' || Alunos[i].Sexo == 'm') aprovM++;
+            else if (Alunos[i].Sexo == 'F' || Alunos[i].Sexo == 'f') aprovF++;
+        } else {
+            Alunos[i].Aprovado = false;
+        }
+    } 
+
+    printf("\n========== RESULTADOS ==========\n");
+    printf("1) Total de alunos: %i\n", Qtdalunos);
+    if (Qtdalunos > 0)
+        printf("2) Media das idades: %.1f\n", somaIdades / Qtdalunos);
+
+    printf("3) Quantidade de aprovados: %i\n", totalAprovados);
+   
+    if (totalM > 0) 
+        printf("4) Porcentagem M aprovados: %.1f%%\n", ((float)aprovM / totalM) * 100);
+    if (totalF > 0) 
+        printf("4) Porcentagem F aprovados: %.1f%%\n", ((float)aprovF / totalF) * 100);
+
+    printf("5) Lista de Alunos Aprovados:\n");
+    for (int i = 0; i < Qtdalunos; i++) {
+        if (Alunos[i].Aprovado) printf("   - %s\n", Alunos[i].Nome);
+    }
+
+    return 0;
+}
